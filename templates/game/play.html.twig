@@ -1,0 +1,16 @@
+{%extends 'base.html.twig' %}
+{% block title %}
+   Tic Tac Toe
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class=""></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/play.js') }}"> </script>
+{% endblock %}

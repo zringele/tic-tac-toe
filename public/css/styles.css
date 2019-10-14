@@ -22,6 +22,7 @@ h1{
 #message{
     background: #333;
     color: #fff;
+    text-align: center;
 }
 #gameBoard li{
     float: left;

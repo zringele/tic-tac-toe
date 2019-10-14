@@ -6,34 +6,62 @@ namespace App\Solver;
 abstract class Position
 {
 
-    protected function worstMoveScore($action)
+    /**
+     * @return int
+     *
+     * Evaluates position score
+     * https://en.wikipedia.org/wiki/Minimax
+     */
+    public function minimax(): int
     {
-        if ($this->isFinalPosition()) {
+        if($this->isFinalPosition()) {
             return $this->getScore();
         }
-        $possiblePosition = $this->positionAfterAction($action);
 
-        $worstScore = 2;
-        foreach ($possiblePosition->getAvailableMoves() as $action) {
-            $score = $possiblePosition->worstMoveScore($action);
-            if ($score === 0) {
-                $worstScore = 0;
-                break;
+        $scores = [];
+        foreach ($this->getAvailableActions() as $possibleAction) {
+            $possiblePosition = $this->positionAfterAction($possibleAction);
+            $scores[] = $possiblePosition->minimax();
+        }
+
+        if ($this->aiTurn()) {
+            return max($scores);
+        } else {
+            return min($scores);
+        }
+    }
+
+    /**
+     * @return int
+     *
+     * returns best possible move
+     */
+    public function bestMove(): int
+    {
+        $bestMove = 0;
+        $bestAction = current($this->getAvailableActions());
+        foreach ($this->getAvailableActions() as $possibleAction) {
+            $possiblePosition = $this->positionAfterAction($possibleAction);
+            $move = $possiblePosition->minimax();
+            if ($move > $bestMove) {
+                $bestMove = $move;
+                $bestAction = $possibleAction;
             }
         }
-        return $worstScore;
+        return $bestAction;
     }
 
-    public function bestMove()
-    {
-        foreach ($this->getAvailableActions() as $move) {}
-    }
+    /**
+     * Required methods for game solving
+     */
 
-    abstract function isFinalPosition();
+    abstract function isFinalPosition(): bool;
 
-    abstract function getScore();
+    abstract function aiTurn(): bool;
 
-    abstract function positionAfterAction($move);
+    abstract function getScore(): int;
 
-    abstract function getAvailableActions();
+    abstract function positionAfterAction($move): Position;
+
+    abstract function getAvailableActions(): ?array;
 }

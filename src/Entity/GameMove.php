@@ -33,8 +33,6 @@ class GameMove
      */
     private $action;
 
-    private $madeBy;
-
     public function getId(): ?int
     {
         return $this->id;

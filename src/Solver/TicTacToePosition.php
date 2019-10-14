@@ -127,7 +127,7 @@ class TicTacToePosition extends Position
     /**
      * @return bool
      */
-    protected function aiTurn(): bool
+    public function aiTurn(): bool
     {
         return ($this->lastTurn % 2 !== 0);
     }
